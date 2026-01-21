@@ -1,4 +1,4 @@
-import AdminDashboardMap from '../../components/AdminDashboardMap'
+import AdminDashboardMap from '@/components/AdminDashboardMap'
 
 const AdminDashboard = () => {
   return (
