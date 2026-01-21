@@ -2,6 +2,7 @@ import express from 'express'
 import dotenv from 'dotenv'
 import hubRoutes from './routes/hub.routes'
 import driverRoutes from './routes/driver.routes'
+import vehiclesRoutes from './routes/vehicles.routes'
 
 dotenv.config()
 
@@ -16,6 +17,7 @@ app.get('/health', (req, res) => {
 
 app.use('/api/hubs', hubRoutes)
 app.use('/api/drivers', driverRoutes)
+app.use('/api/vehicles', vehiclesRoutes)
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`)
