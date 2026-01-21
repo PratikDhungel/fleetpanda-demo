@@ -4,12 +4,12 @@ import * as L from 'leaflet'
 import 'leaflet-routing-machine'
 import 'leaflet-routing-machine/dist/leaflet-routing-machine.css'
 
-type Props = {
+interface IDestinationRoutingProps {
   from: [number, number]
   to: [number, number]
 }
 
-export default function Routing({ from, to }: Props) {
+const DestinationRouting = ({ from, to }: IDestinationRoutingProps) => {
   const map = useMap()
 
   useEffect(() => {
@@ -33,3 +33,5 @@ export default function Routing({ from, to }: Props) {
 
   return null
 }
+
+export default DestinationRouting

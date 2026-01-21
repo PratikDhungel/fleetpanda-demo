@@ -1,5 +1,5 @@
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
-import Routing from './live_fleet/Routing'
+import DestinationRouting from './live_fleet/DestinationRouting'
 
 interface IMapData {
   id: number
@@ -32,7 +32,7 @@ const AdminDashboardMap = ({ mapData }: AdminDashboardMapProps) => {
               <Popup>{eachRoute.endMessage}</Popup>
             </Marker>
 
-            <Routing from={eachRoute.start} to={eachRoute.end} />
+            <DestinationRouting from={eachRoute.start} to={eachRoute.end} />
           </div>
         )
       })}
