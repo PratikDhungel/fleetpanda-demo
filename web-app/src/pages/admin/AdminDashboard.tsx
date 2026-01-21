@@ -1,5 +1,11 @@
+import AdminDashboardMap from '../../components/AdminDashboardMap'
+
 const AdminDashboard = () => {
-  return <div>Admin Dashboard</div>
+  return (
+    <div>
+      <AdminDashboardMap />
+    </div>
+  )
 }
 
 export default AdminDashboard
