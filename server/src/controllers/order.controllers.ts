@@ -11,4 +11,14 @@ async function getAllOrders(_: Request, res: Response) {
   }
 }
 
-export { getAllOrders }
+async function getAllOrdersInTransit(_: Request, res: Response) {
+  try {
+    const orders = await orderServices.getAllOrdersInTransit()
+
+    res.status(200).json(orders)
+  } catch {
+    res.status(500).json({ message: 'Internal Server Error' })
+  }
+}
+
+export { getAllOrders, getAllOrdersInTransit }
