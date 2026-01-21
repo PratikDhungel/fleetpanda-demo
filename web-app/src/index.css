@@ -1,1 +1,6 @@
 @import 'tailwindcss';
+
+/* Manually hide routing container on top right corner of map */
+.leaflet-routing-container {
+  display: none !important;
+}
