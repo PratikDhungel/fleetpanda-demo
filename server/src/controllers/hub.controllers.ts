@@ -6,7 +6,7 @@ async function getAllHubs(_: Request, res: Response) {
     const hubs = await hubServices.getAllHubs()
 
     res.status(200).json({ data: hubs })
-  } catch (err) {
+  } catch {
     res.status(500).json({ message: 'Internal Server Error' })
   }
 }
