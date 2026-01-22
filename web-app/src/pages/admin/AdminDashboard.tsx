@@ -11,10 +11,11 @@ function transformOrdersData(data: OrdersInTransit[]) {
     return {
       id: transitOrder.order_id,
       start: [transitOrder.lat, transitOrder.lng] as [number, number],
-      startMessage: `Current Driver: ${transitOrder.driver_name}`,
+      startMessage: `Driver: ${transitOrder.driver_name} with Truck: ${transitOrder.vehicle_registration}`,
       end: [transitOrder.destination_lat, transitOrder.destination_lng] as [number, number],
       endMessage: `Destination: ${transitOrder.destination_name}`,
       driverID: transitOrder.driver_id,
+      vehicleId: transitOrder.vehicle_id,
     }
   })
 
@@ -25,7 +26,14 @@ function transformOrdersData(data: OrdersInTransit[]) {
 
   driverSelectOptions.unshift({ label: 'All', value: 'all' })
 
-  return { mapData, driverSelectOptions }
+  const vehicleSelectOptions = data.map((transitOrder) => ({
+    label: transitOrder.vehicle_registration,
+    value: transitOrder.vehicle_id,
+  })) as TDropdownOption[]
+
+  vehicleSelectOptions.unshift({ label: 'All', value: 'all' })
+
+  return { mapData, driverSelectOptions, vehicleSelectOptions }
 }
 
 const AdminDashboard = () => {
@@ -40,9 +48,10 @@ const AdminDashboard = () => {
 
   const {
     admin: {
-      dashboardFilters: { selectedDriverId },
+      dashboardFilters: { selectedDriverId, selectedVehicleId },
     },
     updateAdminDashboardDriverFilter,
+    updateAdminDashboardVehicleFilter,
   } = useGlobalStore()
 
   if (isLoading) {
@@ -53,12 +62,17 @@ const AdminDashboard = () => {
     return <div>Error Loading Live Fleet Map</div>
   }
 
-  const { mapData, driverSelectOptions } = transformOrdersData(data)
-  const selectedDriverOption = driverSelectOptions.find((driver) => driver.value === selectedDriverId)!
+  const { mapData, driverSelectOptions, vehicleSelectOptions } = transformOrdersData(data)
 
-  const filteredMapData = mapData.filter(
-    (each) => selectedDriverId === 'all' || each.driverID === selectedDriverId,
-  )
+  const selectedDriverOption = driverSelectOptions.find((driver) => driver.value === selectedDriverId)!
+  const selectedVehicleOption = vehicleSelectOptions.find((driver) => driver.value === selectedVehicleId)!
+
+  const filteredMapData = mapData.filter((each) => {
+    const isDriverSelected = selectedDriverId === 'all' || selectedDriverId === each.driverID
+    const isVehicleSelected = selectedVehicleId === 'all' || selectedVehicleId === each.vehicleId
+
+    return isDriverSelected && isVehicleSelected
+  })
 
   return (
     <div>
@@ -66,11 +80,19 @@ const AdminDashboard = () => {
         <span className='text-xl font-bold'>Live Fleet Map</span>
       </div>
 
-      <div className='flex gap-3 mb-5'>
+      <div className='flex wrap gap-4 mb-5'>
         <DropdownSelect
+          dropdownLabel='Select Driver'
           options={driverSelectOptions}
           selectedOption={selectedDriverOption}
           setSelectedOption={updateAdminDashboardDriverFilter}
+        />
+
+        <DropdownSelect
+          dropdownLabel='Select Vehicle'
+          options={vehicleSelectOptions}
+          selectedOption={selectedVehicleOption}
+          setSelectedOption={updateAdminDashboardVehicleFilter}
         />
       </div>
 

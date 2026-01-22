@@ -5,7 +5,7 @@ import type { TDropdownOption } from '@/components/select/DropdownSelect'
 
 interface IAdminDashboardFilters {
   selectedDriverId: string | number
-  vehicle: string
+  selectedVehicleId: string | number
 }
 
 interface GlobalState {
@@ -13,6 +13,7 @@ interface GlobalState {
     dashboardFilters: IAdminDashboardFilters
   }
   updateAdminDashboardDriverFilter: (newDriver: TDropdownOption) => void
+  updateAdminDashboardVehicleFilter: (newVehicle: TDropdownOption) => void
 }
 
 const useGlobalStore = create<GlobalState>()(
@@ -21,7 +22,7 @@ const useGlobalStore = create<GlobalState>()(
       admin: {
         dashboardFilters: {
           selectedDriverId: 'all',
-          vehicle: 'all',
+          selectedVehicleId: 'all',
         },
       },
       updateAdminDashboardDriverFilter: (newDriver: TDropdownOption) =>
@@ -30,6 +31,15 @@ const useGlobalStore = create<GlobalState>()(
             admin: {
               ...state.admin,
               dashboardFilters: { ...state.admin.dashboardFilters, selectedDriverId: newDriver.value },
+            },
+          }
+        }),
+      updateAdminDashboardVehicleFilter: (newVehicle: TDropdownOption) =>
+        set((state) => {
+          return {
+            admin: {
+              ...state.admin,
+              dashboardFilters: { ...state.admin.dashboardFilters, selectedVehicleId: newVehicle.value },
             },
           }
         }),
